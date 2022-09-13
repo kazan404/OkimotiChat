@@ -20,6 +20,12 @@ namespace OkimotiChatApplication.Data
             return String.Join(", ", participantStrings.Distinct());
         }
 
+        public int GetRoomParticipantNum()
+        {
+            List<string> participantStrings = chatParticipantDatas.ConvertAll<string>(data => data.GetName());
+            return participantStrings.Count;
+        }
+
         public void DeleteParticipant(int id)
         {
             int deleteIndex = chatParticipantDatas.FindIndex(data => data.IsIDName(id) == true);

@@ -15,9 +15,16 @@
 @if (!_isChatting)
 {
     <p>
-        今、どんな気持ち？:
+        今の参加人数：<b>@_numRoomParticipant</b>
     </p>
 
+    <p>
+        部屋の中はこんな感じ：<b>@_roomOkimoti</b>
+    </p>
+
+    <p>
+        今、どんな気持ち？:
+    </p>
     <input type="text" maxlength="32" @bind="@_okimoti" />
     <button type="button" @onclick="@Chat"><span class="oi oi-chat" aria-hidden="true"></span> Chat!</button>
 
@@ -75,6 +82,8 @@ else
 
     private string _okimoti;
 
+    private string _numRoomParticipant = "0";
+
     // name of the user who will be chatting
     private string _username;
     private int _usernameNum;
@@ -97,6 +106,15 @@ else
 
     private string _hubUrl;
     private HubConnection _hubConnection;
+
+    /// <summary>
+    /// 遷移してきた直後の処理
+    /// </summary>
+    protected override void OnInitialized()
+    {
+        _roomOkimoti = "None";
+        RefreshRoomParticipantNum();
+    }
 
     public async Task Chat()
     {
@@ -161,7 +179,11 @@ else
         // Inform blazor the UI needs updating
         StateHasChanged();
     }
-
+    private void RefreshRoomParticipantNum()
+    {
+        _numRoomParticipant = chatParticipantService.GetRoomParticipantNum().ToString();
+        StateHasChanged();
+    }
 
     private void BroadcastMessage(string name, string message)
     {
