@@ -114,6 +114,11 @@ else
     {
         _roomOkimoti = "None";
         RefreshRoomParticipantNum();
+        RefreshRoomOkimoti();
+        if (_roomOkimoti.Equals(String.Empty))
+        {
+            _roomOkimoti = "None";
+        }
     }
 
     public async Task Chat()
